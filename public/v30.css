@@ -1,0 +1,34 @@
+/* One centered column. Voting uses the space normally reserved for the secret. */
+.game-screen.game-impostor{grid-template-columns:minmax(0,1fr);grid-template-rows:auto 48px minmax(0,1fr) auto;gap:6px;min-width:0;width:100%;max-width:100%;box-sizing:border-box}
+.game-impostor :is(.game-page-heading,.play-layout,.play-area,.game-content-inner,.score-strip,.scoreboard){min-width:0;max-width:100%;box-sizing:border-box}
+.game-impostor .play-area{padding:12px 18px}.game-impostor .play-area>h2{text-align:center;font-size:18px;margin:5px 0 9px}
+.game-impostor #game-content{display:flex;overflow:hidden!important;min-width:0;width:100%}
+.game-impostor .game-content-inner{height:100%;width:100%;display:flex;transform:none!important}
+.game-impostor .impostor-workspace{display:flex;flex-direction:column;align-items:stretch;gap:8px;height:100%;width:100%;min-width:0;min-height:0}
+.game-impostor .private-word{flex:none;width:min(100%,620px);box-sizing:border-box;align-self:center;margin:0 auto;padding:8px 12px!important;text-align:center}
+.game-impostor .impostor-workspace[data-stage=ballots] .private-word,.game-impostor .impostor-workspace[data-stage=reveal] .private-word{display:none!important}
+.game-impostor .private-word .eyebrow{font-size:10px}.game-impostor .private-word #secret-word{font-size:27px;overflow-wrap:anywhere}.game-impostor .secret-peek{min-height:46px;gap:4px}.game-impostor .secret-peek small{font-size:10px;line-height:1.4}
+.game-impostor #impostor-stage{flex:1;display:flex;flex-direction:column;gap:8px;min-height:0;min-width:0;width:100%;justify-content:center;align-items:stretch}
+.game-impostor #clue-form{width:min(100%,800px);box-sizing:border-box;align-self:center;display:flex;flex-direction:row;gap:8px;margin:0 auto;min-width:0}
+.game-impostor #clue-form input{flex:1;min-width:0;width:0;font-size:16px}.game-impostor #clue-form button{flex:none;font-size:14px;white-space:nowrap}
+.game-impostor .clue-grid{flex:1;min-height:0;min-width:0;grid-auto-rows:minmax(0,1fr);gap:9px;align-content:stretch;grid-template-columns:repeat(var(--suspect-columns,4),minmax(0,1fr))}
+.game-impostor .suspect-page{display:contents}.game-impostor .suspect-card{min-height:0;min-width:0;padding:10px 12px;gap:6px;justify-content:center;align-items:center;text-align:center}
+.game-impostor .suspect-card strong{font-size:17px;font-weight:750;line-height:1.2;color:var(--ink);max-width:100%}
+.game-impostor .suspect-card span{font-size:17px;line-height:1.3;color:var(--ink);margin:0;overflow-wrap:anywhere;max-width:100%}
+.game-impostor .suspect-card small{font-size:11px;line-height:1.2}.game-impostor .suspect-card:disabled{opacity:1;border-style:dashed}.game-impostor .suspect-card:disabled small{color:var(--purple)}
+.game-impostor .abstain-vote{flex:none;align-self:center;font-size:15px;font-weight:700;min-height:42px;padding:9px 24px;margin:0;border-color:#b69aff99}
+.game-impostor #impostor-stage>.room-hint{display:none}.game-impostor .eliminated-players{flex:none;align-self:center;margin:0}.elimination-history-open{font-size:12px;line-height:1.3;padding:7px 14px}
+.game-impostor .suspect-pagination{display:none;flex:none;gap:8px;justify-content:center}.suspect-pagination button{font-size:12px;padding:7px 12px}.suspect-pagination [aria-pressed=true]{border-color:var(--purple);background:#b69aff24}
+.game-impostor .spectator-clues{flex:1;min-height:0;grid-auto-rows:minmax(0,1fr);align-content:stretch;gap:8px}.game-impostor .spectator-clues p{justify-content:center;text-align:center;font-size:16px;padding:10px;line-height:1.3;color:var(--ink)}.game-impostor .spectator-clues strong{font-size:16px;color:var(--ink)}
+.game-impostor .spectator-banner{text-align:center}.game-impostor .impostor-results{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.game-impostor .suspect-result{min-height:0;padding:6px;margin:0}.game-impostor .elimination-verdict{flex:none}.game-impostor .saved{font-size:12px;margin:6px 0 0;text-align:center}.game-impostor .round-verdict{display:none!important}
+.game-impostor .scoreboard{flex:1 1 0;flex-wrap:wrap!important;min-width:0;overflow:visible!important}.game-impostor .score-chip{flex-shrink:0}.game-impostor .score-strip{flex-wrap:nowrap;min-width:0}.game-impostor .score-strip>.text-btn{font-size:11px;flex-shrink:0}
+.impostor-history-dialog{width:min(650px,90vw);max-height:80dvh;overflow:auto}.impostor-history-dialog h2{font-size:23px}.impostor-history-dialog .eliminated-roster{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.impostor-history-dialog .eliminated-roster>div{padding:14px;gap:8px;font-size:16px}.impostor-history-dialog .eliminated-roster small{font-size:12px}.impostor-history-dialog .role-badge{font-size:13px}
+
+@media(max-width:1000px){.game-screen.game-impostor{grid-template-rows:auto 35px minmax(0,1fr) auto}.game-impostor .suspect-card strong,.game-impostor .suspect-card span{font-size:15px}.game-impostor .suspect-card{padding:8px;gap:4px}}
+@media(max-width:700px),(max-height:620px){
+ .game-screen.game-impostor{grid-template-rows:auto 24px minmax(0,1fr) auto;gap:4px}.game-impostor .play-area{padding:9px 10px}.game-impostor .play-area>h2{display:none}
+ .game-impostor .clue-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.game-impostor .suspect-page{display:none}.game-impostor .suspect-page.is-active{display:contents}.game-impostor .suspect-pagination{display:flex}
+ .game-impostor .suspect-card strong,.game-impostor .suspect-card span{font-size:14px}.game-impostor .suspect-card small{font-size:10px}.game-impostor .abstain-vote{font-size:14px;min-height:36px;padding:7px 18px}.game-impostor .saved{font-size:11px}
+ .game-impostor .spectator-clues{grid-template-columns:repeat(3,minmax(0,1fr))}.game-impostor .spectator-clues p,.game-impostor .spectator-clues strong{font-size:13px}.game-impostor .impostor-results{grid-template-columns:repeat(3,minmax(0,1fr))}.game-impostor .suspect-result strong{font-size:11px}.game-impostor .suspect-result small{font-size:10px}
+}
+@media(max-width:480px){.game-impostor .clue-grid,.game-impostor .spectator-clues{grid-template-columns:repeat(2,minmax(0,1fr))}.game-impostor .suspect-card{padding:7px}.game-impostor .suspect-card small{display:none}.game-impostor .score-strip>.eyebrow{display:none}.game-impostor .scoreboard{max-height:32px!important;overflow:hidden!important}.game-impostor .spectator-clues p{padding:5px;gap:3px}.game-impostor .impostor-results{grid-template-columns:repeat(2,minmax(0,1fr))}.game-impostor #clue-form button{padding:10px;font-size:12px}}

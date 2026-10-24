@@ -1,0 +1,30 @@
+/* A fixed decoy conceals the real word's shape and length while released. */
+.game-impostor .private-word #secret-word{position:relative;visibility:hidden;filter:none;height:38px;min-height:38px;line-height:38px;white-space:nowrap}
+.game-impostor .secret-peek:not(.is-revealed):not(.is-role) #secret-word:after{content:'DAILYZE OO DAILY';position:absolute;inset:0;display:block;visibility:visible;text-align:center;font-size:27px;letter-spacing:3px;filter:blur(9px);color:#d0d4ff}
+.game-impostor .secret-peek:is(.is-revealed,.is-role) #secret-word{visibility:visible}
+/* The verdict replaces the instruction title and duplicate result cards. */
+.game-impostor:has(.impostor-workspace[data-stage=reveal]) .play-area>h2{display:none}
+.game-impostor .impostor-workspace[data-stage=reveal] #impostor-stage{justify-content:center}
+.game-impostor .impostor-workspace[data-stage=reveal] .elimination-verdict{box-sizing:border-box;margin:0;min-height:0;padding:18px}
+/* Only the ranking scrolls. Every next-game action stays outside that region. */
+.results-screen{box-sizing:border-box;min-width:0}
+.results-panel{box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden;min-width:0;gap:10px}
+.results-panel>.section-head{flex:none;margin:0}
+.results-panel>.ranking{flex:1 1 0;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:#89719f #21192c;padding-right:8px}
+.results-panel>.ranking:focus-visible{outline:2px solid var(--purple);outline-offset:-2px;border-radius:8px}
+.results-panel>:is(#host-controls,.result-actions,.room-hint){flex:none}
+.results-panel #host-controls{margin:0;padding-top:8px}.results-panel #host-controls:empty{display:none}
+.results-panel .result-actions{margin:0;gap:7px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.results-panel .result-actions>button{min-width:0;padding:11px 10px;font-size:12px;line-height:1.25;white-space:normal}
+.results-panel .result-actions>.wide{width:auto}
+.results-panel>.room-hint{margin:0;line-height:1.4}
+.results-panel .rank-row{padding:12px 0}
+@media(max-width:700px),(max-height:650px){.results-panel{padding:12px;gap:7px}.results-panel .section-head h2{font-size:20px}.results-panel .result-actions>button{padding:8px;font-size:11px}.results-panel #host-controls{padding-top:5px}.results-panel .rank-row{padding:9px 0}.results-panel .room-hint{font-size:8px}}
+
+.results-panel .result-actions>.return-to-room{grid-column:1/-1;width:100%;font-weight:700}
+
+/* The browser must not cancel a scene swipe as a page scroll. */
+body[data-view=lobby] .lobby-screen{touch-action:none}
+body[data-view=lobby] :is(.room-panel,.vote-dock){touch-action:pan-y}
+
+.results-panel .result-actions>[hidden],.results-panel #next-status[hidden]{display:none!important}

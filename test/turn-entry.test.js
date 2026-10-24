@@ -1,0 +1,4 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {createTurnEntry} from '../public/turn-entry.js';
+test('annonce Désamorçage : à l’arrivée de chaque tour, jamais en boucle, après réponse ou en révélation',()=>{const cue=createTurnEntry('a'),room={phase:'playing'},q={turn:'b',private:{finished:false}},p={answer:false};assert.equal(cue.update(room,q,p),false);q.turn='a';assert.equal(cue.update(room,q,p),true);assert.equal(cue.update(room,q,p),false);q.turn='b';assert.equal(cue.update(room,q,p),false);q.turn='a';assert.equal(cue.update(room,q,p),true);p.answer=true;assert.equal(cue.update(room,q,p),false);p.answer=false;q.private.finished=true;assert.equal(cue.update(room,q,p),false);q.private.finished=false;room.phase='reveal';assert.equal(cue.update(room,q,p),false);});

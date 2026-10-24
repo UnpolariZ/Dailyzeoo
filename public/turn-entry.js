@@ -1,0 +1,1 @@
+export function createTurnEntry(playerId){let wasActive=false;return{update(room,question,player){const active=room.phase==='playing'&&question.turn===playerId&&!player.answer&&!question.private?.finished;const entered=active&&!wasActive;wasActive=active;return entered;}};}

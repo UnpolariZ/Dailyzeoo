@@ -1,0 +1,4 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {drawingMask} from '../drawing-hints.js';
+test('Sketch : plafond du quart, progression cumulative, ponctuation et mots courts',()=>{for(const word of ['OS','CHAT','FER A CHEVAL','UN ASTRONAUTE DANSE SUR LA LUNE']){const q={correct:word,start:1000,deadline:61000},letters=[...word].filter(c=>/[A-Z]/.test(c)).length,budget=Math.floor(letters/4);let previous=[];for(let now=1000;now<=61000;now+=500){const mask=drawingMask(q,now),visible=mask.flatMap((c,i)=>/[A-Z]/.test(c)?[i]:[]);assert.ok(visible.length<=budget);assert.ok(previous.every(i=>visible.includes(i)));for(let i=0;i<word.length;i++)if(!/[A-Z]/.test(word[i]))assert.equal(mask[i],word[i]);previous=visible;}assert.equal(previous.length,budget);assert.equal(drawingMask(q,1000).filter(c=>/[A-Z]/.test(c)).length,0);}});

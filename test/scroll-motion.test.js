@@ -1,0 +1,7 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {createScrollMotion} from '../public/scroll-motion.js';
+function setup(){let position=0,id=0,time=0;const frames=new Map(),motion=createScrollMotion({read:()=>position,write:n=>position=n,max:()=>2400,request:fn=>{frames.set(++id,fn);return id;},cancel:id=>frames.delete(id)});return{motion,get position(){return position;},frame(){time+=16;const batch=[...frames.values()];frames.clear();batch.forEach(fn=>fn(time));},settle(){for(let n=0;frames.size&&n<300;n++)this.frame();assert.equal(frames.size,0);}};}
+test('molette rapide : tous les événements sont cumulés, même avant la première image',()=>{const a=setup();for(let i=0;i<10;i++)a.motion.add(140);a.frame();assert.ok(a.position>0&&a.position<1400);a.settle();assert.equal(a.position,1400);});
+test('grands gestes continus : aucune distance perdue pendant le lissage',()=>{const a=setup();for(let i=0;i<6;i++){a.motion.add(300);a.frame();a.frame();}a.settle();assert.equal(a.position,1800);});
+test('inversion, limites et clic-glissé : réponse sans poursuite dans le mauvais sens',()=>{const a=setup();a.motion.add(2000);a.frame();const before=a.position;a.motion.add(-100);a.frame();assert.ok(a.position<before);a.settle();assert.ok(Math.abs(a.position-Math.max(0,before-100))<.001);a.motion.add(10000);a.settle();assert.equal(a.position,2400);a.motion.add(-100);a.settle();assert.equal(a.position,2300);a.motion.add(-1000);a.motion.stop();const stopped=a.position;a.settle();assert.equal(a.position,stopped);});

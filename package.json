@@ -1,0 +1,19 @@
+{
+  "name": "dailyzeoo",
+  "version": "37.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Arcade multijoueur immersive : salon 3D plein écran et classements persistants",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test",
+    "dev": "node preview.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "three": "0.180.0",
+    "gsap": "3.13.0"
+  }
+}

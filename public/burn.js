@@ -1,0 +1,18 @@
+export const BURN_MS=2700;
+// The same live DOM is consumed by the fire: no screenshot or replacement of the title.
+function noise(x){const i=Math.floor(x),f=x-i,s=f*f*(3-2*f),hash=n=>{const v=Math.sin(n*127.1+311.7)*43758.5453;return v-Math.floor(v);};return hash(i)*(1-s)+hash(i+1)*s;}
+export function burnEdge(progress,width,height,time=0){const p=Math.max(0,Math.min(1,progress)),base=height+80-p*(height+170);return Array.from({length:81},(_,i)=>({x:i/80*width,y:base+(noise(i*.17+time*.35)-.5)*54+(noise(i*.65-time*.8)-.5)*24+(noise(i*2.1+time*1.6)-.5)*10}));}
+
+export function startBurn(overlay){
+ if(typeof document.createElement!=='function')return{dispose(){}};
+ const canvas=document.createElement('canvas'),ctx=canvas.getContext('2d');if(!ctx)return{dispose(){}};canvas.className='intro-burn-fire';canvas.setAttribute('aria-hidden','true');document.body.append(canvas);const w=innerWidth,h=innerHeight,ratio=Math.min(devicePixelRatio||1,1.5);canvas.width=Math.ceil(w*ratio);canvas.height=Math.ceil(h*ratio);const flame=document.createElement('canvas');flame.width=64;flame.height=128;const f=flame.getContext('2d'),g=f.createLinearGradient(0,0,0,128);g.addColorStop(0,'#ff6b0000');g.addColorStop(.3,'#de390044');g.addColorStop(.65,'#ff7816bb');g.addColorStop(.88,'#ffd277e8');g.addColorStop(1,'#fff1cdbb');f.fillStyle=g;f.beginPath();f.moveTo(32,0);f.bezierCurveTo(16,37,10,53,7,89);f.bezierCurveTo(2,125,55,140,59,101);f.bezierCurveTo(63,71,39,58,32,0);f.fill();const smoke=document.createElement('canvas');smoke.width=smoke.height=96;const sc=smoke.getContext('2d'),sg=sc.createRadialGradient(48,48,0,48,48,48);sg.addColorStop(0,'#453a3266');sg.addColorStop(1,'#28232900');sc.fillStyle=sg;sc.fillRect(0,0,96,96);let frame,done=false;const start=performance.now();
+ function draw(now){if(done)return;const elapsed=(now-start)/1000,p=Math.min(1,(now-start)/BURN_MS),edge=burnEdge(p,w,h,elapsed);overlay.style.clipPath=`polygon(0 0,100% 0,${[...edge].reverse().map(v=>v.x+'px '+v.y+'px').join(',')})`;ctx.setTransform(ratio,0,0,ratio,0,0);ctx.clearRect(0,0,w,h);
+ // Broad soot and scorched material stay attached to the uneven combustion front.
+ for(const [size,color]of [[25,'#160c09'],[13,'#4b1b0b'],[6,'#c5420c'],[2,'#ffc36a']]){ctx.beginPath();edge.forEach((v,i)=>i?ctx.lineTo(v.x,v.y-size*.35):ctx.moveTo(v.x,v.y-size*.35));ctx.lineWidth=size;ctx.strokeStyle=color;ctx.stroke();}
+ for(let i=0;i<14;i++){const age=(elapsed*.35+i*.173)%1,x=((i*.6180339)%1)*w,base=edge[Math.min(80,Math.floor(x/w*80))].y,size=45+age*100;ctx.globalAlpha=(1-age)*.32;ctx.drawImage(smoke,x+Math.sin(elapsed+i)*age*40-size/2,base-age*145-size/2,size,size);}ctx.globalAlpha=1;
+ ctx.globalCompositeOperation='lighter';
+ for(let i=0;i<76;i++){const seed=(i*.6180339)%1,life=.4+(i%7)*.065,age=(elapsed/life+i*.137)%1,x=seed*w,base=edge[Math.min(80,Math.floor(seed*80))].y,size=12+(i%9)*3;ctx.globalAlpha=Math.sin(age*Math.PI)*.65;ctx.drawImage(flame,x+Math.sin(elapsed*3+i)*age*16-size/2,base-age*(35+size)-size*1.8,size*(1-age*.35),size*2.2);}
+ for(let i=0;i<48;i++){const age=(elapsed*(.65+i%5*.1)+i*.137)%1,x=((i*.6180339)%1)*w,base=edge[Math.min(80,Math.floor(x/w*80))].y;ctx.globalAlpha=(1-age)*.85;ctx.fillStyle=i%3?'#ffab3c':'#ffe4a0';ctx.fillRect(x+Math.sin(elapsed*2+i)*age*36,base-age*135,1+i%2,2+i%3);}
+ ctx.globalAlpha=1;ctx.globalCompositeOperation='source-over';if(p<1)frame=requestAnimationFrame(draw);}
+ draw(start);return{dispose(){done=true;cancelAnimationFrame(frame);canvas.remove();overlay.style.clipPath='';canvas.width=canvas.height=1;flame.width=flame.height=1;smoke.width=smoke.height=1;}};
+}

@@ -1,0 +1,5 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {bindReflexInput} from '../public/reflex-input.js';
+test('Flash Reflex : envoi dès l’appui souris ou tactile, aucun second envoi au relâchement',()=>{for(const pointerType of ['mouse','touch','pen']){const button={disabled:false},times=[];let now=100;bindReflexInput(button,()=>times.push(now));button.onpointerdown({button:0,isPrimary:true,pointerType,preventDefault(){}});assert.deepEqual(times,[100]);now=900;button.onclick({detail:1,pointerType,preventDefault(){}});assert.deepEqual(times,[100]);}});
+test('Flash Reflex : clavier à l’appui, répétitions et boutons secondaires ignorés',()=>{const b={disabled:false};let count=0;const dispose=bindReflexInput(b,()=>count++),base={preventDefault(){}};b.onpointerdown({...base,button:2});b.onpointerdown({...base,button:0,isPrimary:false});assert.equal(count,0);b.onkeydown({...base,key:' ',repeat:false});b.onkeydown({...base,key:' ',repeat:true});assert.equal(count,1);b.disabled=true;b.onpointerdown({...base,button:0});assert.equal(count,1);dispose();assert.equal(b.onpointerdown,null);});
